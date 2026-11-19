@@ -29,7 +29,6 @@ const client = new DynamoDBClient({
 const docClient = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = 'Players';
 
-// Ensure table with playerID PK and playerName GSI exists on startup
 async function initTable(retries = 10) {
     for (let i = 0; i < retries; i++) {
       try {
@@ -65,7 +64,6 @@ async function initTable(retries = 10) {
     }
   }
 
-// 1. POST endpoint: Add a new player with a unique playerID
 app.post('/api/players', async (req, res) => {
   try {
     const { playerName } = req.body;
@@ -94,7 +92,6 @@ app.post('/api/players', async (req, res) => {
   }
 });
 
-// 2. GET endpoint: Query by playerName query parameter
 app.get('/api/players', async (req, res) => {
   try {
     const { playerName } = req.query;
@@ -124,7 +121,6 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-// 3. PUT endpoint: Update player wins and losses using playerID PK
 app.put('/api/players/:playerID', async (req, res) => {
   try {
     const { playerID } = req.params;
