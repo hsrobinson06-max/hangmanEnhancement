@@ -2,9 +2,10 @@
  * GuessedLetters Component
  * Renders an organized, alphabetized list of letters that the user has already typed and tried.
  */
-export default function GuessedLetters({ guessedLetters }) {
+export default function GuessedLetters({guessedLetters}) {
   // Return nothing if no letters have been guessed yet
-  if (guessedLetters.size === 0) return null;
+  if (guessedLetters.size === 0) 
+    return null;
 
   return (
     <div style={{ margin: "20px 0" }}>
