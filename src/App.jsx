@@ -9,13 +9,11 @@ const MAX_LIVES = 6;
 const API_URL = "http://localhost:5001/api/players";
 
 export default function App() {
-  // 1. Player & Login State
   const [nameInput, setNameInput] = useState("");
   const [player, setPlayer] = useState({ playerID: "", playerName: "", wins: 0, losses: 0 });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [statsUpdated, setStatsUpdated] = useState(false);
 
-  // Existing Game State
   const [wordToGuess, setWordToGuess] = useState(WORD_TO_GUESS);
   const [guessedLetters, setGuessedLetters] = useState(new Set());
 
@@ -26,11 +24,9 @@ export default function App() {
   const isLost = incorrectGuesses >= MAX_LIVES;
   const isWon = wordToGuess.split("").every((letter) => guessedLetters.has(letter));
 
-  // Calculate Win Percentage
   const totalGames = player.wins + player.losses;
   const winPercentage = totalGames > 0 ? Math.round((player.wins / totalGames) * 100) : 0;
 
-  // 2. Login Handler (GET -> if 404, POST)
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!nameInput.trim()) return;
@@ -67,7 +63,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [guessedLetters, isWon, isLost, isLoggedIn]);
 
-  // 3. Update local state first, then send PUT request on Win/Loss
   useEffect(() => {
     if ((!isWon && !isLost) || !isLoggedIn || statsUpdated) return;
 
@@ -77,10 +72,8 @@ export default function App() {
       losses: isLost ? player.losses + 1 : player.losses,
     };
 
-    // Update React state locally first
     setPlayer((prev) => ({ ...prev, ...updatedStats }));
 
-    // Save to DynamoDB via PUT
     fetch(`${API_URL}/${player.playerID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -98,7 +91,6 @@ export default function App() {
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px", textAlign: "center" }}>
       <h1>Hangman Game</h1>
 
-      {/* 4. Login Form OR Player Stats Bar */}
       {!isLoggedIn ? (
         <form onSubmit={handleLogin} style={{ marginBottom: "20px" }}>
           <input
